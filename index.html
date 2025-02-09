@@ -209,11 +209,21 @@
     /* Mobile-specific styles */
     @media (max-width: 768px) {
       .history-panel {
-        width: 20vw; /* 20% of the viewport width */
+        width: 22vw; /* 22% of the viewport width */
+        height: 50vh; /* 50% of the viewport height */
+        border-bottom-left-radius: 12px; /* Rounded bottom-left corner */
+        border-bottom-right-radius: 12px; /* Rounded bottom-right corner */
         padding: 10px; /* Adjust padding for smaller screens */
       }
       .history-panel h2 {
         font-size: 1.2rem; /* Adjust font size for smaller screens */
+      }
+      .history-item img {
+        width: 100%; /* Ensure images take full width */
+        height: auto; /* Maintain aspect ratio */
+      }
+      .history-download-icon {
+        display: none; /* Hide download icon on mobile */
       }
     }
   </style>
