@@ -160,18 +160,18 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 150px; /* Reduced height for mobile */
+      height: 50px; /* Collapsed height */
       background-color: #2d3748;
       padding: 10px;
       overflow-x: auto;
       overflow-y: hidden;
       white-space: nowrap;
       box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+      transition: height 0.3s ease;
       z-index: 1000;
     }
-    .history-panel.collapsed {
-      transform: translateY(100%);
+    .history-panel.expanded {
+      height: 150px; /* Expanded height */
     }
     .history-panel h2 {
       font-size: 1.2rem;
@@ -214,6 +214,41 @@
       width: 16px;
       height: 16px;
       fill: #2d3748;
+    }
+    .toggle-button {
+      display: none; /* Hidden by default */
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2d3748;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      z-index: 1001;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .toggle-button svg {
+      width: 16px;
+      height: 16px;
+      fill: #e2e8f0;
+      transition: transform 0.3s ease;
+    }
+    .toggle-button.rotated svg {
+      transform: rotate(180deg);
+    }
+    @media (max-width: 768px) {
+      .toggle-button {
+        display: block; /* Show toggle button on mobile */
+      }
+      .history-panel {
+        height: 50px; /* Collapsed by default on mobile */
+      }
+      .history-panel.expanded {
+        height: 150px; /* Expanded height on mobile */
+      }
     }
     @media (min-width: 768px) {
       .history-panel {
@@ -291,11 +326,26 @@
 
   <!-- History Panel -->
   <div class="history-panel">
+    <button class="toggle-button" id="toggleHistory">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 16l-5-5h3V9h4v2h3l-5 5zm0-14a10 10 0 100 20 10 10 0 000-20z"/>
+      </svg>
+    </button>
     <h2>History</h2>
     <div id="historyList"></div>
   </div>
 
   <script>
+    // Toggle history panel on mobile
+    const toggleHistoryButton = document.getElementById('toggleHistory');
+    const historyPanel = document.querySelector('.history-panel');
+
+    toggleHistoryButton.addEventListener('click', () => {
+      historyPanel.classList.toggle('expanded');
+      toggleHistoryButton.classList.toggle('rotated');
+    });
+
+    // Rest of the JavaScript code remains the same
     document.getElementById('upscaleForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -407,7 +457,7 @@
       slider.addEventListener('mousedown', () => {
         isDragging = true;
       });
-
+      
       container.addEventListener('click', (e) => {
         const containerRect = container.getBoundingClientRect();
         const offsetX = e.clientX - containerRect.left;
