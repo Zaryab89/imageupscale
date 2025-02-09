@@ -157,32 +157,23 @@
     }
     .history-panel {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50px; /* Collapsed height */
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100vh;
       background-color: #2d3748;
-      padding: 10px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      white-space: nowrap;
-      box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-      transition: height 0.3s ease;
-      z-index: 1000;
-    }
-    .history-panel.expanded {
-      height: 150px; /* Expanded height */
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
     }
     .history-panel h2 {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       font-weight: bold;
       color: #e2e8f0;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
     .history-item {
-      display: inline-block;
-      width: 120px; /* Fixed width for history items */
-      margin-right: 10px;
+      margin-bottom: 12px;
       cursor: pointer;
       transition: transform 0.2s ease;
       position: relative;
@@ -192,17 +183,16 @@
     }
     .history-item img {
       width: 100%;
-      height: 100px; /* Reduced height for history images */
       border-radius: 8px;
-      object-fit: cover;
+      object-fit: contain;
     }
     .history-download-icon {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 10px;
+      right: 10px;
       background-color: rgba(255, 255, 255, 0.8);
       border-radius: 50%;
-      padding: 6px;
+      padding: 8px;
       cursor: pointer;
       z-index: 3;
       transition: background-color 0.3s ease;
@@ -211,72 +201,25 @@
       background-color: rgba(255, 255, 255, 1);
     }
     .history-download-icon svg {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       fill: #2d3748;
     }
-    .toggle-button {
-      display: none; /* Hidden by default */
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #2d3748;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      z-index: 1001;
-      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
-    }
-    .toggle-button svg {
-      width: 16px;
-      height: 16px;
-      fill: #e2e8f0;
-      transition: transform 0.3s ease;
-    }
-    .toggle-button.rotated svg {
-      transform: rotate(180deg);
-    }
+
+    /* Mobile-specific styles */
     @media (max-width: 768px) {
-      .toggle-button {
-        display: block; /* Show toggle button on mobile */
-      }
       .history-panel {
-        height: 50px; /* Collapsed by default on mobile */
+        width: 20vw; /* 20% of the viewport width */
+        padding: 10px; /* Adjust padding for smaller screens */
       }
-      .history-panel.expanded {
-        height: 150px; /* Expanded height on mobile */
-      }
-    }
-    @media (min-width: 768px) {
-      .history-panel {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: auto;
-        left: auto;
-        width: 300px;
-        height: 100vh;
-        overflow-y: auto;
-        overflow-x: hidden;
-        white-space: normal;
-      }
-      .history-item {
-        display: block;
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 12px;
-      }
-      .history-item img {
-        height: 150px;
+      .history-panel h2 {
+        font-size: 1.2rem; /* Adjust font size for smaller screens */
       }
     }
   </style>
 </head>
 <body class="bg-gray-900 flex items-center justify-center min-h-screen">
-  <div class="bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-2xl mx-4">
+  <div class="bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-2xl">
     <h1 class="text-6xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-poppins" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
       MR--X
     </h1>
@@ -326,26 +269,10 @@
 
   <!-- History Panel -->
   <div class="history-panel">
-    <button class="toggle-button" id="toggleHistory">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M12 16l-5-5h3V9h4v2h3l-5 5zm0-14a10 10 0 100 20 10 10 0 000-20z"/>
-      </svg>
-    </button>
     <h2>History</h2>
     <div id="historyList"></div>
   </div>
-
   <script>
-    // Toggle history panel on mobile
-    const toggleHistoryButton = document.getElementById('toggleHistory');
-    const historyPanel = document.querySelector('.history-panel');
-
-    toggleHistoryButton.addEventListener('click', () => {
-      historyPanel.classList.toggle('expanded');
-      toggleHistoryButton.classList.toggle('rotated');
-    });
-
-    // Rest of the JavaScript code remains the same
     document.getElementById('upscaleForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -457,7 +384,7 @@
       slider.addEventListener('mousedown', () => {
         isDragging = true;
       });
-      
+
       container.addEventListener('click', (e) => {
         const containerRect = container.getBoundingClientRect();
         const offsetX = e.clientX - containerRect.left;
